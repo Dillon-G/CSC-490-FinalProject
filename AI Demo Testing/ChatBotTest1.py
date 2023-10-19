@@ -48,7 +48,7 @@ def CustomChatGPT(user_input):
         pet.hunger = "Hungry"
     elif pet.hunger_val < 20:
         pet.hunger = "Starving"
-    print(f"Hunge: {pet.hunger}")
+    print(f"Hunger: {pet.hunger}")
     print(f"Hunger_Val: {pet.hunger_val}")
 
     ### Sets Pet hunger to full and refils the numerical value  ###
