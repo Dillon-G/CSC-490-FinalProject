@@ -6,18 +6,19 @@ import random
 
 from pet import Pet
 from player import Player
+from location import Location
 openai.api_key = "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"      ### Do not Edit, will not work without key.
 
-### Pet and Player are Created, Pet is set to Unnamed
-pet = Pet("Unnamed", "Full", 100, "Happy", 6, "NOT_SET", -1, "NULL", "Home", "NO OWNER")
-player = Player("NOT_SET", 23, "Home", pet.name)
+### Pet, Player and default locations are Created, Pet is set to Unnamed
+pet = Pet("Unnamed", "Full", "Steak", 100, "Happy", 6, "NOT_SET", -1, "NULL", "Home", "NO OWNER")
+player = Player("NOT_SET", 23, "Home", pet.name, 1000)
+location = Location("Home", "Sunny", 0, 1, 1, [])
 
 ### With Names for ease of testing  ###
 # pet = Pet("Artemis", "Full", 100, "Happy", 6, "Cat-Dog", 2, "F", "Home", "NO OWNER")
 # player = Player("Player", 23, "Home", pet.name)
-pet.owner = player.name
-
-### What the AI Needs to act like prior to the first message sent
+# location = Location("Home", "Sunny", 0, 1)
+## What the AI Needs to act like prior to the first message sent
 messages = [{"role": "system", "content": "You are an AI that is in control of a pet simulator game,"
              "\nYour purpose is to generate scenarios based off of User input and data on the Pet."
              "\n Responses should be short and sweet, no need for a detailed paragraph"
@@ -26,6 +27,12 @@ messages = [{"role": "system", "content": "You are an AI that is in control of a
 
 ### Getting and Sending data to the AI
 def CustomChatGPT(user_input):
+
+    pet.owner = player.name
+    pet.location = location.name
+    player.location = location.name
+    print("\nCurrent Location: ",location.name)
+
 
     ##### No Type Testing, Must send "Set Name: " with correct casing to work #####
     if "my name is " in user_input.lower():
@@ -115,7 +122,8 @@ def CustomChatGPT(user_input):
     ##### ChatGPT Text Creation ######
     context =  f"Name: {pet.name} Animal Type: {pet.animal_type} Hunger: {pet.hunger} Mood: {pet.mood} Age: {pet.age} Gender: {pet.gender} Location: {pet.location} Owner: {pet.owner}\n"
     rules = "ChatBot Rules:  1. Only respond to questions related to the pet game. Do no respond to things like \"Best fastfood restaurants\""\
-                            "2. No matter what the pet type the Players pet is always alive, even if it's obscure"
+                            "2. No matter what the pet type the Players pet is always alive, even if it's obscure"\
+                            "3. When the player asks to go somewhere like the park respond with \"You go to [Location]\""
 
     ### Rules, Pet data and user input are combined and sent to the chatbot ###            
     messages.append({"role": "user", "content": f"{user_input} {context} {rules}"})
@@ -136,6 +144,17 @@ def CustomChatGPT(user_input):
         pet.hunger_val -= random.randint(4,10)
         ChatGPT_reply = response["choices"][0]["message"]["content"]
         messages.append({"role": "assistant", "content": ChatGPT_reply})
+        if " go to the " in ChatGPT_reply.lower():
+            ChatGPT_reply = ChatGPT_reply.lower()
+            index = ChatGPT_reply.index(" go to the ")  
+            moved_to_full = ChatGPT_reply[index + len(" go to the "):]
+            moved_to_single = moved_to_full.split()
+            print("Entered Location:", moved_to_single[0])
+            location.name = moved_to_single[0]
+        
+        if " go home " in ChatGPT_reply.lower():
+            print("Entered Location: Home")
+            location.name = "home"
 
 
         ### ChatGPT can only store 4096 tokens before crashing entirely      ### 
