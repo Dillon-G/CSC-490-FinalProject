@@ -3,19 +3,26 @@
 }
 
 body {
-  background-color: #ffffff;
+  background-color: #DDDDDD;
   font-family: "Calibri", "Roboto", sans-serif;
+}
+
+.image-test {
+  background-image: url('AI Logo.jpg');
+  background-size: cover;
+  max-width: 35%;
+  height: 35%;
 }
 
 .chat_window {
   position: absolute;
   width: calc(100% - 20px);
   max-width: 800px;
-  height: 500px;
+  height: 45%;
   border-radius: 10px;
-  background-color: #ffff;
+  background-color: #DDDDDD;
   left: 50%;
-  top: 50%;
+  top: 70%;
   transform: translateX(-50%) translateY(-50%);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
   background-color: #ffff;
@@ -51,7 +58,7 @@ body {
 }
 .top_menu .title {
   text-align: center;
-  color: #bcbdc0;
+  color: #333333;
   font-size: 20px;
 }
 
