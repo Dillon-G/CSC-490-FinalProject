@@ -1,90 +1,78 @@
 <!DOCTYPE html>
 <!-- doctype declaration -->
 <html lang="en">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <script src="chatbot.js"></script>
-  <link rel="stylesheet" href="main.css">
-    <title>PetAI</title>                                
-    <style>
-      ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-      }
-      li {
-        float: left;
-      }
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="chatbot.js"></script>
+<link rel="stylesheet" href="main.css">
+<title>PetAI</title>
+<style>
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
 
-      .Navebar {
-        display: block;
-        padding-top: 2px;
-        padding-right: 90px;
-        padding-left: 90px;
-        padding-bottom: 2px;
-        background-color: #fa924d;
-      }
-    </style>
-  </head>
+  .image {
+      width: 100%;
+      text-align: center;
+      display: block; /* Ensures the margin property works correctly */
+      margin: 0 auto; /* Center the image horizontally */
+  }
+  /*  Removed the "float: left;" since it kept all messaged glued to the left side */
+  li {
+    word-wrap: break-word;      /*  Wraps message bubbles so they dont go off the screen  */
+    overflow-wrap: break-word;  /*  Breaks words that go beyond the chat bubble size ex: 100 'a' strung together */
+  }
 
-  <body margin:0px;>
-    <!--The header, contains the Website/System name and login/signup and home to return to the mainpage-->
-    <header style="text-align:right">
-      <a href="mainpage.html" title="Return to Mainpage">Home</a>
-      <h1 title="tooltip" style="text-align:center;">PetAI</h1>
-    </header>
+  .text_wrapper {
+    max-width: 40%;   /* Set a maximum width for the message bubbles */
+  }
+  
+  .Navebar {
+    display: block;
+    padding-top: 2px;
+    padding-right: 90px;
+    padding-left: 90px;
+    padding-bottom: 2px;
+    background-color: #fa924d;
+  }
+</style>
 
-  <ul>
-      <!-- These are the links to different clothing sections html files from images
-        <li><a href="shirts.html" title="Shirts" class="Navebar"><p style="font-size:1.5vw">Shirts</p></a></li>
-        <li><a href="pants.html" title="Pants"class="Navebar"><p style="font-size:1.5vw">Pants</p></a></li>
-        <li><a href="shorts.html" title="Shorts"class="Navebar"><p style="font-size:1.5vw">Shorts</p></a></li>
-        <li><a href="shoes.html" title="Shoes"class="Navebar"><p style="font-size:1.5vw">Shoes</p></a></li>
-        <li><a href="hats.html" title="Hats"class="Navebar"><p style="font-size:1.5vw">Hats</p></a></li>
-        <li><a href="socks.html" title="Socks"class="Navebar"><p style="font-size:1.5vw">Socks</p></a></li> -->
-  </ul> 
+<body margin:0px;>
+  <!--The header, contains the Website/System name and login/signup and home to return to the mainpage-->
+  <header style="text-align:right">
+    <h1 title="tooltip" style="text-align:center;">PetAI</h1>
+  </header>
 
-   <!--
-    <h1><br><br><br><br><br> Introduction</h1>
-    <p style="font-size:1.2vw">E-commerce Software System is an exciting new website created to meet all of customers' apparel needs. With a simple and flexible system built to help build, update, and maintain your website. Also Managers and employees will be able to do their job efficiently and with ease, now that day to day tasks are as easy as the click of a button.
-      With the E-commerce Software System crude and glitchy websites will be a thing of the past. Big and small business owners can profit from our free to use system available across the country. Making E-commerce Software System the obvious choice for all your website management needs.
-    </p>
-  -->
-    <div class="chat_window">
-      <div class="top_menu">
-          <div class="buttons">
-              <div class="button close"></div>
-              <div class="button minimize"></div>
-              <div class="button maximize"></div>
-          </div>
-          <div class="title">Chat</div>
-      </div>
-      <ul class="messages"></ul>
-      <div class="bottom_wrapper clearfix">
-          <div class="message_input_wrapper">
-              <input class="message_input" placeholder="Type your message here..." />
-          </div>
-          <div class="send_message">
-              <div class="icon"></div>
-              <div class="text">Send</div>
-          </div>
-      </div>
-  </div>
-  <div class="message_template">
-      <li class="message">
-          <div class="avatar"></div>
-          <div class="text_wrapper">
-              <div class="text"></div>
-          </div>
-      </li>
+  <div class="image">
+    <img src="AI Logo.jpg" width="20%" height="20%">
   </div>
   
-    <!--Contact Us section if the customer has an issue-->
-    <footer style="clear: left">
-      <br>
-      <hr>
-      <header><b>Contact us</b></header>
-      <p>Adress: 1400 SPRING GARDEN STREET,Greensboro NC, 27412</p>
-      <p>Telephone: (336)334-5000</p>
-    </footer>
-  </body>
+  <div class="chat_window">
+    <div class="top_menu">
+      <div class="buttons">
+
+      </div>
+      <div class="title">Chat</div>
+    </div>
+    <ul class="messages"></ul>
+    <div class="bottom_wrapper clearfix">
+      <div class="message_input_wrapper">
+        <input class="message_input" placeholder="Type your message here..." />
+      </div>
+      <div class="send_message">
+        <div class="icon"></div>
+        <div class="text">Send</div>
+      </div>
+    </div>
+  </div>
+  <div class="message_template">
+    <li class="message">
+      <div class="avatar"></div>
+      <div class="text_wrapper">
+        <div class="text"></div>
+      </div>
+    </li>
+  </div>
+
 </html>
