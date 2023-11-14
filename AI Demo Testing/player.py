@@ -9,7 +9,8 @@ class Player:
         self.money = money
 
     def get_player_data(self):
-        return f"Player Data: \nName: {self.name}\nAge: {self.age}\nLocation: {self.location}\nPet Owned: {self.pet_owned}\nMoney: {self.money}"
+        return f"Player Data: \nName: {self.name}\nAge: {self.age}\nLocation: {self.location}\
+            \nPet Owned: {self.pet_owned}\nMoney: {self.money}"
 
     ### Getters and Setters for when needed
     ### Generate Pet isnt here since I don't know what to put in for that yet
@@ -40,7 +41,7 @@ class Player:
 
 
 ### For Testing the File    ###
-# testPlayer = Player("Dillon", 23, "Home", "NONE")
+# testPlayer = Player("Dillon", 23, "Home", "NONE", 100)
 
 # print(testPlayer.name)
 # print(testPlayer.location)
