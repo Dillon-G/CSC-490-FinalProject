@@ -3,15 +3,10 @@
 }
 
 body {
-  background-color: #DDDDDD;
+  background-color: #8FC2C5;
+  /* background-image: url('AI Logo.jpg');
+  background-size: cover; */
   font-family: "Calibri", "Roboto", sans-serif;
-}
-
-.image-test {
-  background-image: url('AI Logo.jpg');
-  background-size: cover;
-  max-width: 35%;
-  height: 35%;
 }
 
 .chat_window {
@@ -67,9 +62,10 @@ body {
   list-style: none;
   padding: 20px 10px 0 10px;
   margin: 0;
-  height: 347px;
+  height: 60%;
   overflow: scroll;
 }
+/* adds the animation of chat bubbles appearing */
 .messages .message {
   clear: both;
   overflow: hidden;
@@ -77,14 +73,19 @@ body {
   transition: all 0.5s linear;
   opacity: 0;
 }
+
+/* Left Pfp */
 .messages .message.left .avatar {
   background-color: #f5886e;
   float: left;
 }
+
+/* Left chat bubble creation */
 .messages .message.left .text_wrapper {
   background-color: #ffe6cb;
   margin-left: 20px;
 }
+/* Left chat bubble tail */
 .messages .message.left .text_wrapper::after, .messages .message.left .text_wrapper::before {
   right: 100%;
   border-right-color: #ffe6cb;
@@ -92,15 +93,21 @@ body {
 .messages .message.left .text {
   color: #c48843;
 }
+
+/* Right Pfp */
 .messages .message.right .avatar {
   background-color: #fdbf68;
   float: right;
 }
+
+/* Creates the right bubble */
 .messages .message.right .text_wrapper {
   background-color: #c7eafc;
   margin-right: 20px;
   float: right;
 }
+
+/* Right chat bubble tail */
 .messages .message.right .text_wrapper::after, .messages .message.right .text_wrapper::before {
   left: 100%;
   border-left-color: #c7eafc;
@@ -108,15 +115,21 @@ body {
 .messages .message.right .text {
   color: #45829b;
 }
+
+/* Chat bubble visibility, keep as 1 */
 .messages .message.appeared {
   opacity: 1;
 }
+
+/* Responsible for chat pfps */
 .messages .message .avatar {
   width: 60px;
   height: 60px;
   border-radius: 50%;
   display: inline-block;
 }
+
+/* Responsible for the text bubbles */
 .messages .message .text_wrapper {
   display: inline-block;
   padding: 20px;
@@ -125,6 +138,8 @@ body {
   min-width: 100px;
   position: relative;
 }
+
+/* Adds the tail to the text bubble */
 .messages .message .text_wrapper::after, .messages .message .text_wrapper:before {
   top: 18px;
   border: solid transparent;
