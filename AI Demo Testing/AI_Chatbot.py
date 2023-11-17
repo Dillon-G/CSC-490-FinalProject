@@ -2,11 +2,15 @@
 import openai
 import gradio
 import random
+import subprocess
 from pet import Pet
 from player import Player
 from location import Location
-openai.api_key = "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"      ### Do not Edit, will not work without key.
+from flask import Flask, render_template, request
+import time
 
+openai.api_key = "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"      ### Do not Edit, will not work without key.
+app = Flask(__name__)
 # Implements Gradio to serve as a host for the AI Chatbot
 with gradio.Blocks() as demo:
     chatbot = gradio.Chatbot()
@@ -16,7 +20,6 @@ with gradio.Blocks() as demo:
     pet = Pet("Unnamed", "Full", "Steak", 100, "Happy", 6, "NOT_SET", -1, "NULL", "Home", "NO OWNER")
     player = Player("NOT_SET", 23, "Home", pet.name, 1000)
     location = Location("Home", "Sunny", 0, 1, 1, [])
-
 
     ### With Names for ease of testing  ###
     # pet = Pet("Artemis", "Full", 100, "Happy", 6, "Cat-Dog", 2, "F", "Home", "NO OWNER")
@@ -39,27 +42,28 @@ with gradio.Blocks() as demo:
 
         ##### No Type Testing, Must send "Set Name: " with correct casing to work #####
         if "my name is " in user_input.lower():
-            user_input = user_input.lower()
-            index = user_input.index("my name is ")  # Find the starting position of the players name
-            name = user_input[index + len("my name is "):]  # Extract the name
-            player.name = name
-            print("Entered player name:", name)
+            user_name = user_input.lower()
+            index = user_name.index("my name is ")  # Find the starting position of the players name
+            name = user_name[index + len("my name is "):]  # Extract the name
+            player.name = name.capitalize()
+            print("Entered player name:", player.name)
 
         ##### No Type Testing, Must send "Set Name: " with correct casing to work #####
         if "pet type: " in user_input.lower():
-            user_input = user_input.lower()
-            index = user_input.index("pet type: ")  # Find the starting position of "Set type: "
-            type = user_input[index + len("pet type: "):]  # Extract the name
+            pet_type = user_input.lower()
+            index = pet_type.index("pet type: ")  # Find the starting position of "Set type: "
+            type = pet_type[index + len("pet type: "):]  # Extract the name
             pet.animal_type = type
             print("Entered animal type:", type)
+            send_message(type)
 
         ##### No Name Testing, Must send "Set Name: " with correct casing to work #####
         if "set name: " in user_input.lower():
-            user_input = user_input.lower()
-            index = user_input.index("set name: ")  # Find the starting position of "Set Name: "
-            name = user_input[index + len("set name: "):]  # Extract the name
-            pet.name = name
-            print("Entered name:", name)
+            pet_name = user_input.lower()
+            index = pet_name.index("set name: ")  # Find the starting position of "Set Name: "
+            name = pet_name[index + len("set name: "):]  # Extract the name
+            pet.name = name.capitalize()
+            print("Entered name:", pet.name)
             pet.age = random.randint(0, 4)
             print("Age: ", pet.age)
         
@@ -105,15 +109,15 @@ with gradio.Blocks() as demo:
             pet.hunger = "Satisfied"
         elif pet.hunger_val > 40:
             pet.hunger = "Peckish"
-            if mood_swing == 10 and pet.mood != "Annoyed":
+            if mood_swing >= 9 and pet.mood != "Annoyed":
                 pet.mood_val -= 1
         elif pet.hunger_val > 20:
             pet.hunger = "Hungry"
-            if mood_swing >= 5 and pet.mood != "Annoyed":
+            if mood_swing >= 3 and pet.mood != "Annoyed":
                 pet.mood_val -= 1
         elif pet.hunger_val < 20:
             pet.hunger = "Starving"
-            if mood_swing >= 3 and pet.mood != "Angry":
+            if mood_swing >= 1 and pet.mood != "Angry":
                 pet.mood_val = 3
         
         ###     Debug values with pet data   ###
@@ -124,8 +128,8 @@ with gradio.Blocks() as demo:
 
         ##### ChatGPT Text Creation ######
         context =  f"Name: {pet.name} Animal Type: {pet.animal_type} Hunger: {pet.hunger} Mood: {pet.mood} Age: {pet.age} Gender: {pet.gender} Location: {pet.location} Owner: {pet.owner}\n"
-        rules = "ChatBot Rules:  1. Only respond to questions related to the pet game. Do no respond to things like \"Best fastfood restaurants\""\
-                                "2. No matter what the pet type the Players pet is always alive, even if it's obscure"\
+        rules = "ChatBot Rules:  1. Only respond to questions related to the pet game."\
+                                "2. No matter what the pet is, assume it is alive"\
                                 "3. When the player asks to go somewhere like the park respond with \"You go to [Location]\""\
                                 "4. Keep Messages short. This is meant to simulate a simple game kids can play. No need for paragraphs of text a simple sentence will work."
 
@@ -142,7 +146,7 @@ with gradio.Blocks() as demo:
             ChatGPT_scripted = "Welcome! Please Enter your name with: \n\nMy name is _____\n\n(Ex.\"My name is Stan\")"
             chat_history.append((user_input, ChatGPT_scripted))
         elif "NOT_SET" in pet.animal_type:
-            ChatGPT_scripted = "Welcome! Please define the type of pet you would like with: \n\nPet Type: [Type]\n\n(Ex.\"Pet Type: Cat-Dog Hybrid\")"
+            ChatGPT_scripted = "Welcome " + player.name +"! Please define the type of pet you would like with: \n\nPet Type: [Type]\n\n(Ex.\"Pet Type: Cat-Dog Hybrid\")"
             chat_history.append((user_input, ChatGPT_scripted))
         elif "Unnamed" in pet.name:
             ChatGPT_scripted = "No pet name set, please set a name with \n\n'Set Name: [Name]\n\n(Ex.\"Set Name: Artemis\")"
@@ -152,7 +156,7 @@ with gradio.Blocks() as demo:
             ChatGPT_reply = response["choices"][0]["message"]["content"]
             chat_history.append((user_input, ChatGPT_reply))
             messages.append({"role": "assistant", "content": ChatGPT_reply})
-            if " go to the " in ChatGPT_reply.lower():
+            if " to the " in ChatGPT_reply.lower():
                 ChatGPT_reply = ChatGPT_reply.lower()
                 index = ChatGPT_reply.index(" go to the ")  
                 moved_to_full = ChatGPT_reply[index + len(" go to the "):]
@@ -160,7 +164,7 @@ with gradio.Blocks() as demo:
                 print("Entered Location:", moved_to_single[0])
                 location.name = moved_to_single[0]
             
-            if " go home " in ChatGPT_reply.lower() or "go back home" in ChatGPT_reply.lower() or "return home" in ChatGPT_reply.lower():
+            if " go home " in ChatGPT_reply.lower() or "go back home" in ChatGPT_reply.lower() or "return home" in ChatGPT_reply.lower() or "go home" in user_input.lower():
                 print("Entered Location: Home")
                 location.name = "home"
 
@@ -182,6 +186,22 @@ with gradio.Blocks() as demo:
       
     msg.submit(CustomChatGPT, [msg, chatbot], [msg, chatbot])
        
+def send_message(message):
+    # Use subprocess to run python2.py and pass the message as an argument
+    process = subprocess.Popen(['python', './Basic Image Generator/Image_Generator.py', message], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    stdout, stderr = process.communicate()
+
+    if stderr:
+        print(f"Error: {stderr.decode('utf-8')}")
+    else:
+        image_url = stdout.decode('utf-8')
+        image_url = image_url[:-1]
+        print(f"Image Generated!\n {image_url}")
+        #### Write url to text file, was meant to be used to print image on html page
+        # with open('image.txt', 'w') as file:
+        #     file.write(image_url)  # Adding a new line after each write
+
+    time.sleep(1)
 
 if __name__ == '__main__':
     demo.launch()
