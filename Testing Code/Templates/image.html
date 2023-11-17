@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Generate Image</title>
+  </head>
+  <body>
+    <form method="post" action="/">
+      <label for="pet_description">Enter pet description please:</label>
+      <input type="text" id="pet_description" name="pet_description" required>
+      <button type="submit">Generate Image</button>
+    </form>
+    <!-- Display the generated image -->
+    {% if image_url %}
+      <img src="{{ image_url }}" alt="Generated Image" />
+    {% endif %}
+  </body>
+</html>
+
+
