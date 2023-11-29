@@ -20,7 +20,7 @@ with gradio.Blocks() as demo:
     pet = Pet("Unnamed", "Full", "Steak", 100, "Happy", 6, "NOT_SET", -1, "NULL", "Home", "NO OWNER")
     player = Player("NOT_SET", 23, "Home", pet.name, 1000)
     location = Location("Home", "Sunny", 0, 1, 1, [])
-
+    tutorial_complete = 0;
     ### With Names for ease of testing  ###
     # pet = Pet("Artemis", "Full", 100, "Happy", 6, "Cat-Dog", 2, "F", "Home", "NO OWNER")
     # player = Player("Player", 23, "Home", pet.name)
@@ -55,7 +55,7 @@ with gradio.Blocks() as demo:
             type = pet_type[index + len("pet type: "):]  # Extract the name
             pet.animal_type = type
             print("Entered animal type:", type)
-            send_message(type)
+            image_generation(type)
 
         ##### No Name Testing, Must send "Set Name: " with correct casing to work #####
         if "set name: " in user_input.lower():
@@ -146,7 +146,7 @@ with gradio.Blocks() as demo:
             ChatGPT_scripted = "Welcome! Please Enter your name with: \n\nMy name is _____\n\n(Ex.\"My name is Stan\")"
             chat_history.append((user_input, ChatGPT_scripted))
         elif "NOT_SET" in pet.animal_type:
-            ChatGPT_scripted = "Welcome " + player.name +"! Please define the type of pet you would like with: \n\nPet Type: [Type]\n\n(Ex.\"Pet Type: Cat-Dog Hybrid\")"
+            ChatGPT_scripted = "Welcome " + player.name +"! Please define the type of pet you would like using: \n\nPet Type: [Type]\n\n(Ex.\"Pet Type: Cat-Dog Hybrid\")\nOnce complete please refresh the page!"
             chat_history.append((user_input, ChatGPT_scripted))
         elif "Unnamed" in pet.name:
             ChatGPT_scripted = "No pet name set, please set a name with \n\n'Set Name: [Name]\n\n(Ex.\"Set Name: Artemis\")"
@@ -156,7 +156,7 @@ with gradio.Blocks() as demo:
             ChatGPT_reply = response["choices"][0]["message"]["content"]
             chat_history.append((user_input, ChatGPT_reply))
             messages.append({"role": "assistant", "content": ChatGPT_reply})
-            if " to the " in ChatGPT_reply.lower():
+            if " go to the " in ChatGPT_reply.lower():
                 ChatGPT_reply = ChatGPT_reply.lower()
                 index = ChatGPT_reply.index(" go to the ")  
                 moved_to_full = ChatGPT_reply[index + len(" go to the "):]
@@ -186,22 +186,29 @@ with gradio.Blocks() as demo:
       
     msg.submit(CustomChatGPT, [msg, chatbot], [msg, chatbot])
        
-def send_message(message):
-    # Use subprocess to run python2.py and pass the message as an argument
+def image_generation(message):
+    # Subprocess is called to generate image to allow a return statement without breaking the loop.
     process = subprocess.Popen(['python', './Basic Image Generator/Image_Generator.py', message], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdout, stderr = process.communicate()
 
     if stderr:
-        print(f"Error: {stderr.decode('utf-8')}")
+        # If the image generator fails.
+        print(f"Image Generation Failed: {stderr.decode('utf-8')}")
     else:
+        # Cleans up the URL.
         image_url = stdout.decode('utf-8')
         image_url = image_url[:-1]
-        print(f"Image Generated!\n {image_url}")
-        #### Write url to text file, was meant to be used to print image on html page
-        # with open('image.txt', 'w') as file:
-        #     file.write(image_url)  # Adding a new line after each write
 
-    time.sleep(1)
+        # Prints the link of the Image for debug purposes.
+        print(f"Image Generated!\n{image_url}")
+
+        # Write url to text file, allows link to be passed to html file.
+        with open('image.txt', 'w') as file:
+            file.write(image_url)
+        
+        # Boot subprocess to host image on a permemnant link for the html to reference.
+        subprocess.run(["python", "./Basic Image Generator/Image_Loader.py"])
+
 
 if __name__ == '__main__':
     demo.launch()

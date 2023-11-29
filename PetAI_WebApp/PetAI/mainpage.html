@@ -2,6 +2,7 @@
 <!-- doctype declaration -->
 <html lang="en">
 <link rel="stylesheet" href="main.css">
+<link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16">
 <title>PetAI</title>
 <style>
   ul {
@@ -42,10 +43,11 @@
   <header style="text-align:right">
     <h1 title="tooltip" style="text-align:center; color: white;">PetAI</h1>
   </header>
-  <!-- Currently Logo is held here, will be replaced with pet image -->
+  <!-- Pet Image is displayed after being generated and the page is reloaded. -->
   <div class="image">
-    <img src="AI Logo.jpg" width="20%" height="20%">
+    <img src="http://127.0.0.1:5000/image_gen" width="20%" height="20%">
   </div>
+
 
   <!-- Sets up the container and connects to the IP of the python script for the chatbot -->
   <div class="iframe-container">
