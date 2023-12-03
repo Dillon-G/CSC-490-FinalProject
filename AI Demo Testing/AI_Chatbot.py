@@ -207,7 +207,7 @@ def image_generation(message):
             file.write(image_url)
         
         # Boot subprocess to host image on a permemnant link for the html to reference.
-        subprocess.run(["python", "./Basic Image Generator/Image_Loader.py"])
+        # subprocess.run(["python", "./Basic Image Generator/Image_Loader.py"])
 
 
 if __name__ == '__main__':
