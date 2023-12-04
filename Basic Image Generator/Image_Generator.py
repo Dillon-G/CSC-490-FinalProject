@@ -6,6 +6,7 @@ app = Flask(__name__)
 
 # Authenticate with the OpenAI API
 openai.api_key = "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"  # Replace with your actual API key
+#openai.api_key = "Enter your OPENAI API KEY Here"      ### Enter your API Key here to allow the Image generator to run
 
 
 def receive_message_and_respond():

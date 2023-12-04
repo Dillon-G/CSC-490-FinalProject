@@ -10,6 +10,7 @@ from flask import Flask, render_template, request
 import time
 
 openai.api_key = "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"      ### Do not Edit, will not work without key.
+#openai.api_key = "Enter your OPENAI API KEY Here"      ### Enter your API Key here to allow the Chatbot to run
 app = Flask(__name__)
 # Implements Gradio to serve as a host for the AI Chatbot
 with gradio.Blocks() as demo:
