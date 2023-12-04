@@ -5,6 +5,7 @@ When running the program please take note that a specific version of OpenAI must
 ## Setup
 Within `AI_Chatbot.py` as well as `Image_Generator.py` there exists a line that must be filled out with the users OpenAI API key. 
 <br><ins>This key is required to allow the chatbot and image generation to run.</ins>
+<br><ins>Currently there is a temporary key in place which will expire around December 10th, 2023.</ins>
 <br>The key can be entered here in `AI_Chatbot.py`<br>
 ![image](https://github.com/Dillon-G/CSC-490-FinalProject/assets/111513711/11170fe3-7064-4b41-b89b-75ca85d2ca54)
 <br>And then here in `Image_Generator.py`<br>
