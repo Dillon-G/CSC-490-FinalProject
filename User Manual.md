@@ -7,7 +7,7 @@ Within `AI_Chatbot.py` as well as `Image_Generator.py` there exists a line that 
 <br><ins>This key is required to allow the chatbot and image generation to run.</ins>
 <br>The key can be entered here in `AI_Chatbot.py`<br>
 ![image](https://github.com/Dillon-G/CSC-490-FinalProject/assets/111513711/11170fe3-7064-4b41-b89b-75ca85d2ca54)
-<br>And then here in `Image_Generator.py`
+<br>And then here in `Image_Generator.py`<br>
 ![image](https://github.com/Dillon-G/CSC-490-FinalProject/assets/111513711/b1401560-c08a-4010-af7f-1ce10dc88e75)
 
 Next it should be noted that in the final version we were able to get out we managed to allow generated images to display after a web page refresh. However, the method used wasn't properly tested and when called it causes the AI Chatbot to never regain control, thus preventing the experience from moving forward.
