@@ -1,3 +1,9 @@
+@font-face {
+  font-family: 'karma';
+  src: url(karma.future-regular.otf)  
+  format('opentype');
+}
+
 * {
   box-sizing: border-box;
 }
@@ -6,7 +12,7 @@ body {
   background-color: #8FC2C5;
   background-image: url('Web_BG.png');
   background-size: 1000px;
-  font-family: "Calibri", "Roboto", sans-serif;
+  font-family: "Calibri", "Roboto", "karma", sans-serif;
 }
 
 .chat_window {
